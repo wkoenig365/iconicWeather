@@ -1,5 +1,7 @@
 {
   "name": "iconicWeather",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
