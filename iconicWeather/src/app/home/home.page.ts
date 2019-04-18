@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import * as L from 'leaflet';
+import * as J from 'jquery';
 
 @Component( {
   selector: 'app-home',
@@ -9,8 +10,10 @@ import * as L from 'leaflet';
 export class HomePage implements OnInit {
   @ViewChild('map') mapContainer: ElementRef;
   map: any;
-  constructor ( ) {
+  URLlink = '';
+  constructor () {
   }
+
   layersControl = {
     baseLayers: {
       'Dark Base Map': L.tileLayer( 'https://cartodb-basemaps-1.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', { attribution: '...' } ),
@@ -25,7 +28,15 @@ export class HomePage implements OnInit {
       'GOES 16 Low Level WV': L.tileLayer( 'http://realearth.ssec.wisc.edu/tiles/G16-ABI-CONUS-BAND10-VAPR/{z}/{x}/{y}.png', { opacity: .5, attribution: '...' } )
     }
   };
-  ionViewDidEnter() {
+  ionViewDidEnter (URLlink) {
+    $.get('http://198.74.59.47:8080/thredds/catalog/GOES16ConusCH08/latest.html', function(response) {
+      // $('a[href*="latest.html?"]').each(function() {
+      //   // tslint:disable-next-line:prefer-const
+      //   let fileName = response;
+      // });
+      URLlink = $( 'a[href*="/latest.html?/"]' ).attr( 'href' );
+      this.loadmap(URLlink);
+    } );
     this.loadmap();
   }
   loadmap() {
@@ -63,12 +74,21 @@ export class HomePage implements OnInit {
       // tslint:disable-next-line:max-line-length
       'GOES 17 Upper Level WV': L.tileLayer( 'http://realearth.ssec.wisc.edu/tiles/G17-ABI-CONUS-BAND08-VAPR/{z}/{x}/{y}.png', { opacity: .5, attribution: '...' } ),
       // tslint:disable-next-line:max-line-length
-      'Estimated Bulk Wind Shear': L.tileLayer( 'http://realearth.ssec.wisc.edu/tiles/EBSPS/{z}/{x}/{y}.png', { opacity: .5, attribution: '...' } )
+      'Estimated Bulk Wind Shear': L.tileLayer( 'http://realearth.ssec.wisc.edu/tiles/EBSPS/{z}/{x}/{y}.png', { opacity: .5, attribution: '...' } ),
+      // tslint:disable-next-line:max-line-length
+      'My Goes': L.tileLayer.wms('http://198.74.59.47:8080/thredds/wms/GOES16ConusCH08/newest.nc', {
+        layers: 'Rad',
+        version: '1.3.0',
+        format: 'image/png',
+        transparent: true,
+        opacity: .5,
+        attribution: '...'} )
     };
     L.control.layers(baseLayers, overlays).addTo(this.map);
   }
 
   ngOnInit () {
+
   }
   ngAfterViewCheck() {
     this.map.invalidateSize();
