@@ -40,6 +40,12 @@ export class HomePage implements OnInit {
     const overlays = {
       // tslint:disable-next-line:max-line-length
       'Level 2 Radar': L.tileLayer( 'http://198.74.59.47/new/{z}/{x}/{y}.png', { tms: true, opacity: .5, attribution: '...' } ),
+      'nexrad': L.tileLayer.wms('http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi', {
+        layers: 'nexrad-n0r-900913',
+        format: 'image/png',
+        transparent: true,
+        attribution: 'Weather data © 2012 IEM Nexrad'
+        }),
       // tslint:disable-next-line:max-line-length
       'MRMS Merged': L.tileLayer( 'http://realearth.ssec.wisc.edu/tiles/MERGEDREF/{z}/{x}/{y}.png', { opacity: .8, attribution: '...' } ),
       // tslint:disable-next-line:max-line-length
