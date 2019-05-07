@@ -76,13 +76,50 @@ export class HomePage implements OnInit {
       // tslint:disable-next-line:max-line-length
       'Estimated Bulk Wind Shear': L.tileLayer( 'http://realearth.ssec.wisc.edu/tiles/EBSPS/{z}/{x}/{y}.png', { opacity: .5, attribution: '...' } ),
       // tslint:disable-next-line:max-line-length
-      'My Goes': L.tileLayer.wms('http://198.74.59.47:8080/thredds/wms/GOES16ConusCH08/newest.nc', {
+      'My Goes 16 Ch. 08': L.tileLayer.wms('http://198.74.59.47:8080/thredds/wms/GOES16ConusCH08/newest.nc', {
         layers: 'Rad',
         version: '1.3.0',
         format: 'image/png',
         transparent: true,
         opacity: .5,
-        attribution: '...'} )
+        attribution: '...'
+      } ),
+      'RTMA 2m Temp': L.tileLayer.wms('http://198.74.59.47:8080/thredds/wms/rtmaSurface/newest_rtma_surface.grb2?COLORSCALERANGE=270,311', {
+        layers: 'Temperature_height_above_ground',
+        version: '1.3.0',
+        format: 'image/png',
+        styles: 'boxfill/occam',
+        transparent: true,
+        opacity: .5,
+        attribution: '...'
+      } ),
+      'RTMA 2m Dewpoint': L.tileLayer.wms('http://198.74.59.47:8080/thredds/wms/rtmaSurface/newest_rtma_surface.grb2?COLORSCALERANGE=250,305', {
+        layers: 'Dewpoint_temperature_height_above_ground',
+        version: '1.3.0',
+        format: 'image/png',
+        styles: 'boxfill/occam',
+        transparent: true,
+        opacity: .5,
+        attribution: '...'
+      } ),
+      'RTMA 10m Wind (vector)': L.tileLayer.wms('http://198.74.59.47:8080/thredds/wms/rtmaSurface/newest_rtma_surface.grb2?COLORSCALERANGE=0,15', {
+        layers: 'wind @ Specified height level above ground',
+        version: '1.3.0',
+        format: 'image/png',
+        styles: 'vector/ferret',
+        transparent: true,
+        opacity: .5,
+        attribution: '...'
+      } ),
+      'RTMA 10m Wind (boxfill)': L.tileLayer.wms('http://198.74.59.47:8080/thredds/wms/rtmaSurface/newest_rtma_surface.grb2?COLORSCALERANGE=0,15', {
+        layers: 'wind @ Specified height level above ground',
+        version: '1.3.0',
+        format: 'image/png',
+        styles: 'boxfill/ferret',
+        transparent: true,
+        opacity: .5,
+        attribution: '...'
+      } )
     };
     L.control.layers(baseLayers, overlays).addTo(this.map);
   }
